@@ -1,8 +1,7 @@
 spring:
   logging:
     level: debug
-  h2:
-    console:
-      enabled: true
-  jpa:
-    defer-datasource-initialization: true
+  data:
+    mongodb:
+      port: 0
+      host: localhost
