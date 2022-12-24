@@ -2,6 +2,7 @@ package alex.klimchuk.recipe.controllers;
 
 import alex.klimchuk.recipe.dto.IngredientDto;
 import alex.klimchuk.recipe.dto.RecipeDto;
+import alex.klimchuk.recipe.dto.UnitOfMeasureDto;
 import alex.klimchuk.recipe.services.IngredientService;
 import alex.klimchuk.recipe.services.RecipeService;
 import alex.klimchuk.recipe.services.UnitOfMeasureService;
@@ -12,6 +13,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import reactor.core.publisher.Flux;
 
 import java.util.HashSet;
 
@@ -79,7 +81,7 @@ public class IngredientControllerTest {
         recipeDtoMock.setId(1L);
 
         when(recipeService.findDtoById(anyLong())).thenReturn(recipeDtoMock);
-        when(unitOfMeasureService.findAll()).thenReturn(new HashSet<>());
+        when(unitOfMeasureService.findAll()).thenReturn(Flux.just(new UnitOfMeasureDto()));
 
         mockMvc.perform(get("/recipe/1/ingredient/new"))
                 .andExpect(status().isOk())
@@ -95,7 +97,7 @@ public class IngredientControllerTest {
         IngredientDto ingredientDtoMock = new IngredientDto();
 
         when(ingredientService.findByRecipeIdAndIngredientId(anyLong(), anyLong())).thenReturn(ingredientDtoMock);
-        when(unitOfMeasureService.findAll()).thenReturn(new HashSet<>());
+        when(unitOfMeasureService.findAll()).thenReturn(Flux.just(new UnitOfMeasureDto()));
 
         mockMvc.perform(get("/recipe/1/ingredient/2/update"))
                 .andExpect(status().isOk())

@@ -3,8 +3,10 @@ package alex.klimchuk.recipe.services.impl;
 import alex.klimchuk.recipe.dto.UnitOfMeasureDto;
 import alex.klimchuk.recipe.converters.UnitOfMeasureToUnitOfMeasureDto;
 import alex.klimchuk.recipe.repositories.UnitOfMeasureRepository;
+import alex.klimchuk.recipe.repositories.reactive.UnitOfMeasureReactiveRepository;
 import alex.klimchuk.recipe.services.UnitOfMeasureService;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Flux;
 
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -16,21 +18,19 @@ import java.util.stream.StreamSupport;
 @Service
 public class UnitOfMeasureServiceImpl implements UnitOfMeasureService {
 
-    private final UnitOfMeasureRepository unitOfMeasureRepository;
+    private final UnitOfMeasureReactiveRepository unitOfMeasureReactiveRepository;
     private final UnitOfMeasureToUnitOfMeasureDto unitOfMeasureToUnitOfMeasureDto;
 
-    public UnitOfMeasureServiceImpl(UnitOfMeasureRepository unitOfMeasureRepository,
+    public UnitOfMeasureServiceImpl(UnitOfMeasureReactiveRepository unitOfMeasureReactiveRepository,
                                     UnitOfMeasureToUnitOfMeasureDto unitOfMeasureToUnitOfMeasureDto) {
-        this.unitOfMeasureRepository = unitOfMeasureRepository;
+        this.unitOfMeasureReactiveRepository = unitOfMeasureReactiveRepository;
         this.unitOfMeasureToUnitOfMeasureDto = unitOfMeasureToUnitOfMeasureDto;
     }
 
     @Override
-    public Set<UnitOfMeasureDto> findAll() {
-        return StreamSupport.stream(unitOfMeasureRepository.findAll()
-                        .spliterator(), false)
-                .map(unitOfMeasureToUnitOfMeasureDto::convert)
-                .collect(Collectors.toSet());
+    public Flux<UnitOfMeasureDto> findAll() {
+        return unitOfMeasureReactiveRepository.findAll()
+                .map(unitOfMeasureToUnitOfMeasureDto::convert);
     }
 
 }

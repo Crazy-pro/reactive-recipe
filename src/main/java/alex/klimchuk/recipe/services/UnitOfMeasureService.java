@@ -1,6 +1,7 @@
 package alex.klimchuk.recipe.services;
 
 import alex.klimchuk.recipe.dto.UnitOfMeasureDto;
+import reactor.core.publisher.Flux;
 
 import java.util.Set;
 
@@ -9,6 +10,6 @@ import java.util.Set;
  */
 public interface UnitOfMeasureService {
 
-    Set<UnitOfMeasureDto> findAll();
+    Flux<UnitOfMeasureDto> findAll();
 
 }

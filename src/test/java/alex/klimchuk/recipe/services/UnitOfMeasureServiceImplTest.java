@@ -4,13 +4,16 @@ import alex.klimchuk.recipe.dto.UnitOfMeasureDto;
 import alex.klimchuk.recipe.converters.UnitOfMeasureToUnitOfMeasureDto;
 import alex.klimchuk.recipe.domain.UnitOfMeasure;
 import alex.klimchuk.recipe.repositories.UnitOfMeasureRepository;
+import alex.klimchuk.recipe.repositories.reactive.UnitOfMeasureReactiveRepository;
 import alex.klimchuk.recipe.services.impl.UnitOfMeasureServiceImpl;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import reactor.core.publisher.Flux;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
@@ -25,33 +28,30 @@ public class UnitOfMeasureServiceImplTest {
     UnitOfMeasureService service;
 
     @Mock
-    UnitOfMeasureRepository unitOfMeasureRepository;
+    UnitOfMeasureReactiveRepository unitOfMeasureReactiveRepository;
 
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.openMocks(this);
 
         unitOfMeasureToUnitOfMeasureDto = new UnitOfMeasureToUnitOfMeasureDto();
-        service = new UnitOfMeasureServiceImpl(unitOfMeasureRepository, unitOfMeasureToUnitOfMeasureDto);
+        service = new UnitOfMeasureServiceImpl(unitOfMeasureReactiveRepository, unitOfMeasureToUnitOfMeasureDto);
     }
 
     @Test
     public void testFindAll() {
-        Set<UnitOfMeasure> unitOfMeasuresMock = new HashSet<>();
         UnitOfMeasure unitOfMeasure1 = new UnitOfMeasure();
         unitOfMeasure1.setId(1L);
-        unitOfMeasuresMock.add(unitOfMeasure1);
 
         UnitOfMeasure unitOfMeasure2 = new UnitOfMeasure();
         unitOfMeasure2.setId(2L);
-        unitOfMeasuresMock.add(unitOfMeasure2);
 
-        when(unitOfMeasureRepository.findAll()).thenReturn(unitOfMeasuresMock);
+        when(unitOfMeasureReactiveRepository.findAll()).thenReturn(Flux.just(unitOfMeasure1, unitOfMeasure2));
 
-        Set<UnitOfMeasureDto> unitOfMeasures = service.findAll();
+        List<UnitOfMeasureDto> unitOfMeasures = service.findAll().collectList().block();
 
         assertEquals(2, unitOfMeasures.size());
-        verify(unitOfMeasureRepository, times(1)).findAll();
+        verify(unitOfMeasureReactiveRepository, times(1)).findAll();
     }
 
 }
