@@ -2,7 +2,13 @@ package alex.klimchuk.recipe.bootstrap;
 
 import alex.klimchuk.recipe.domain.*;
 import alex.klimchuk.recipe.repositories.*;
+import alex.klimchuk.recipe.repositories.reactive.CategoryReactiveRepository;
+import alex.klimchuk.recipe.repositories.reactive.RecipeReactiveRepository;
+import alex.klimchuk.recipe.repositories.reactive.UnitOfMeasureReactiveRepository;
+import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
@@ -22,6 +28,14 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
     private final CategoryRepository categoryRepository;
     private final RecipeRepository recipeRepository;
 
+//    @Autowired
+//    UnitOfMeasureReactiveRepository unitOfMeasureReactiveRepository;
+//
+//    @Autowired
+//    CategoryReactiveRepository categoryReactiveRepository;
+//
+//    @Autowired
+//    RecipeReactiveRepository recipeReactiveRepository;
 
     public RecipeBootstrap(UnitOfMeasureRepository unitOfMeasureRepository, CategoryRepository categoryRepository,
                            RecipeRepository recipeRepository) {
@@ -33,7 +47,68 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
     @Override
     @Transactional
     public void onApplicationEvent(ContextRefreshedEvent event) {
+        
+        loadCategories();
+        loadUnitOfMeasure();
         recipeRepository.saveAll(getRecipes());
+        log.debug("Loading Bootstrap Data");
+
+//        log.error("##########");
+//        log.error("UnitOfMeasure Count: " + unitOfMeasureReactiveRepository.count().block().toString());
+//        log.error("Category Count: " + categoryReactiveRepository.count().block().toString());
+//        log.error("Recipe Count: " + recipeReactiveRepository.count().block().toString());
+    }
+
+    private void loadCategories(){
+        Category category1 = new Category();
+        category1.setDescription("American");
+        categoryRepository.save(category1);
+
+        Category category2 = new Category();
+        category2.setDescription("Italian");
+        categoryRepository.save(category2);
+
+        Category category3 = new Category();
+        category3.setDescription("Mexican");
+        categoryRepository.save(category3);
+
+        Category category4 = new Category();
+        category4.setDescription("Fast Food");
+        categoryRepository.save(category4);
+    }
+
+    private void loadUnitOfMeasure(){
+        UnitOfMeasure unitOfMeasure1 = new UnitOfMeasure();
+        unitOfMeasure1.setDescription("Teaspoon");
+        unitOfMeasureRepository.save(unitOfMeasure1);
+
+        UnitOfMeasure unitOfMeasure2 = new UnitOfMeasure();
+        unitOfMeasure2.setDescription("Tablespoon");
+        unitOfMeasureRepository.save(unitOfMeasure2);
+
+        UnitOfMeasure unitOfMeasure3 = new UnitOfMeasure();
+        unitOfMeasure3.setDescription("Cup");
+        unitOfMeasureRepository.save(unitOfMeasure3);
+
+        UnitOfMeasure unitOfMeasure4 = new UnitOfMeasure();
+        unitOfMeasure4.setDescription("Pinch");
+        unitOfMeasureRepository.save(unitOfMeasure4);
+
+        UnitOfMeasure unitOfMeasure5 = new UnitOfMeasure();
+        unitOfMeasure5.setDescription("Ounce");
+        unitOfMeasureRepository.save(unitOfMeasure5);
+
+        UnitOfMeasure unitOfMeasure6 = new UnitOfMeasure();
+        unitOfMeasure6.setDescription("Each");
+        unitOfMeasureRepository.save(unitOfMeasure6);
+
+        UnitOfMeasure unitOfMeasure7 = new UnitOfMeasure();
+        unitOfMeasure7.setDescription("Pint");
+        unitOfMeasureRepository.save(unitOfMeasure7);
+
+        UnitOfMeasure unitOfMeasure8 = new UnitOfMeasure();
+        unitOfMeasure8.setDescription("Dash");
+        unitOfMeasureRepository.save(unitOfMeasure8);
     }
 
     private Set<Recipe> getRecipes(){

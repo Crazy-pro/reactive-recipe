@@ -49,13 +49,13 @@ public class IngredientServiceImplTest {
         recipe.setId(1L);
 
         Ingredient ingredient1 = new Ingredient();
-        ingredient1.setId(1L);
+        ingredient1.setId("1");
 
         Ingredient ingredient2 = new Ingredient();
-        ingredient2.setId(1L);
+        ingredient2.setId("1");
 
         Ingredient ingredient3 = new Ingredient();
-        ingredient3.setId(3L);
+        ingredient3.setId("3");
 
         recipe.addIngredient(ingredient1);
         recipe.addIngredient(ingredient2);
@@ -66,29 +66,29 @@ public class IngredientServiceImplTest {
 
         IngredientDto ingredientDto = ingredientService.findByRecipeIdAndIngredientId(1L, 3L);
 
-        assertEquals(Long.valueOf(3L), ingredientDto.getId());
-        assertEquals(Long.valueOf(1L), ingredientDto.getRecipeId());
+        assertEquals("3", ingredientDto.getId());
+        assertEquals("1", ingredientDto.getRecipeId());
         verify(recipeRepository, times(1)).findById(anyLong());
     }
 
     @Test
     public void testSaveRecipeDto() {
         IngredientDto ingredientDtoMock = new IngredientDto();
-        ingredientDtoMock.setId(3L);
+        ingredientDtoMock.setId("3");
         ingredientDtoMock.setRecipeId(2L);
 
         Optional<Recipe> recipeOptional = Optional.of(new Recipe());
 
         Recipe savedRecipe = new Recipe();
         savedRecipe.addIngredient(new Ingredient());
-        savedRecipe.getIngredients().iterator().next().setId(3L);
+        savedRecipe.getIngredients().iterator().next().setId("3");
 
         when(recipeRepository.findById(anyLong())).thenReturn(recipeOptional);
         when(recipeRepository.save(any())).thenReturn(savedRecipe);
 
         IngredientDto savedDto = ingredientService.saveIngredientDto(ingredientDtoMock);
 
-        assertEquals(Long.valueOf(3L), savedDto.getId());
+        assertEquals("3", savedDto.getId());
         verify(recipeRepository, times(1)).findById(anyLong());
         verify(recipeRepository, times(1)).save(any(Recipe.class));
     }
@@ -96,7 +96,7 @@ public class IngredientServiceImplTest {
     @Test
     public void testDeleteById() {
         Ingredient ingredient = new Ingredient();
-        ingredient.setId(3L);
+        ingredient.setId("3");
 
         Recipe recipe = new Recipe();
         recipe.addIngredient(ingredient);

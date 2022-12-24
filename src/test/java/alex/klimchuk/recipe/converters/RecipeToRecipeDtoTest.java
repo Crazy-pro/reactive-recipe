@@ -26,8 +26,8 @@ public class RecipeToRecipeDtoTest {
     public static final String URL = "Some URL";
     public static final Long CAT_ID_1 = 1L;
     public static final Long CAT_ID2 = 2L;
-    public static final Long INGREDIENT_ID_1 = 3L;
-    public static final Long INGREDIENT_ID_2 = 4L;
+    public static final String INGREDIENT_ID_1 = "3";
+    public static final String INGREDIENT_ID_2 = "4";
     public static final Long NOTES_ID = 9L;
     RecipeToRecipeDto converter;
 

@@ -107,7 +107,7 @@ public class IngredientControllerTest {
     @Test
     public void testSaveOrUpdate() throws Exception {
         IngredientDto ingredientDtoMock = new IngredientDto();
-        ingredientDtoMock.setId(3L);
+        ingredientDtoMock.setId("3");
         ingredientDtoMock.setRecipeId(2L);
 
         when(ingredientService.saveIngredientDto(any())).thenReturn(ingredientDtoMock);
