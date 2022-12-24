@@ -8,7 +8,9 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.hibernate.validator.constraints.URL;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -48,7 +50,7 @@ public class RecipeDto {
     @NotBlank
     private String directions;
 
-    private Set<IngredientDto> ingredients = new HashSet<>();
+    private List<IngredientDto> ingredients = new ArrayList<>();
 
     private Byte[] image;
 
@@ -57,6 +59,6 @@ public class RecipeDto {
 
     private NotesDto notes;
 
-    private Set<CategoryDto> categories = new HashSet<>();
+    private List<CategoryDto> categories = new ArrayList<>();
 
 }

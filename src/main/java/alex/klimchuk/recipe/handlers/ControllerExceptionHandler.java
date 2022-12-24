@@ -3,7 +3,6 @@ package alex.klimchuk.recipe.handlers;
 import alex.klimchuk.recipe.exceptions.NotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
@@ -48,7 +47,6 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
         return modelAndView;
     }
 
-    @Override
     public ResponseEntity<Object> handleHttpMessageNotReadable(final HttpMessageNotReadableException ex,
                                                                final HttpHeaders headers,
                                                                final HttpStatus status, final WebRequest request) {
@@ -56,19 +54,11 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
         return handleExceptionInternal(ex, responseBody, headers, status, request);
     }
 
-    @Override
     public ResponseEntity<Object> handleMethodArgumentNotValid(final MethodArgumentNotValidException ex,
                                                                final HttpHeaders headers,
                                                                final HttpStatus status, final WebRequest request) {
         final String responseBody = "Method argument not valid exception";
         return handleExceptionInternal(ex, responseBody, headers, status, request);
-    }
-
-    @ExceptionHandler(ConstraintViolationException.class)
-    public ResponseEntity<Object> handleBadRequest(final ConstraintViolationException ex,
-                                                   final HttpHeaders headers, final WebRequest request) {
-        final String responseBody = "Constraint violation exception";
-        return handleExceptionInternal(ex, responseBody, headers, HttpStatus.BAD_REQUEST, request);
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)

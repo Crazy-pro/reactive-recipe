@@ -103,6 +103,10 @@ public class IngredientServiceImpl implements IngredientService {
                         .findFirst();
             }
 
+            // TODO check for fail
+            IngredientDto ingredientDtoSaved = ingredientToIngredientDto.convert(savedIngredientOptional.get());
+            ingredientDtoSaved.setRecipeId(recipe.getId());
+
             return ingredientToIngredientDto.convert(savedIngredientOptional.get());
         }
     }

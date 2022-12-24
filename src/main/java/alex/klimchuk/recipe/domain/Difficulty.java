@@ -1,6 +1,5 @@
 package alex.klimchuk.recipe.domain;
 
-import jakarta.persistence.*;
 import lombok.*;
 
 /**
@@ -16,10 +15,8 @@ public enum Difficulty {
     MODERATE(1L, "Moderate"),
     HARD(2L, "Hard");
 
-    @Column(name = "id")
     private Long id;
 
-    @Column(name = "name")
     private String name;
 
 }

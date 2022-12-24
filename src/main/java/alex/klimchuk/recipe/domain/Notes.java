@@ -1,30 +1,28 @@
 package alex.klimchuk.recipe.domain;
 
-import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
  * Copyright Alex Klimchuk (c) 2022.
  */
 @Data
-@Entity
 @Builder
+@Document
 @ToString
 @EqualsAndHashCode(exclude = {"recipe"})
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "notes")
 public class Notes {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @DBRef
     private Recipe recipe;
 
-    @Lob
-    @Column(name = "recipe_notes")
     private String recipeNotes;
 
 }

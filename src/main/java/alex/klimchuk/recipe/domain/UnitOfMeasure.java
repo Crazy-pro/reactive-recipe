@@ -1,26 +1,24 @@
 package alex.klimchuk.recipe.domain;
 
-import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
  * Copyright Alex Klimchuk (c) 2022.
  */
 @Data
-@Entity
 @Builder
+@Document
 @ToString
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "unit_of_measure")
 public class UnitOfMeasure {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "description")
     private String description;
 
 }

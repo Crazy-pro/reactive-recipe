@@ -1,5 +1,6 @@
 package alex.klimchuk.recipe.repositories;
 
+import alex.klimchuk.recipe.bootstrap.RecipeBootstrap;
 import alex.klimchuk.recipe.domain.UnitOfMeasure;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,29 +18,44 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 @DataJpaTest
 @RunWith(SpringRunner.class)
-public class UnitOfMeasureRepositoryIT {
+class UnitOfMeasureRepositoryIT {
 
     @Autowired
     UnitOfMeasureRepository unitOfMeasureRepository;
 
-    @BeforeEach
-    public void setUp() {
+    @Autowired
+    CategoryRepository categoryRepository;
 
+    @Autowired
+    RecipeRepository recipeRepository;
+
+    @BeforeEach
+    void setUp() {
+
+        recipeRepository.deleteAll();
+        unitOfMeasureRepository.deleteAll();
+        categoryRepository.deleteAll();
+
+        RecipeBootstrap recipeBootstrap = new RecipeBootstrap(unitOfMeasureRepository, categoryRepository, recipeRepository);
+
+        recipeBootstrap.onApplicationEvent(null);
     }
 
     @Test
     //@DirtiesContext
-    public void testFindByDescription() {
-        Optional<UnitOfMeasure> unitOfMeasureOptional = unitOfMeasureRepository.findByDescription("Cup");
+    void testFindByDescription() {
 
-        assertEquals("Cup", unitOfMeasureOptional.get().getDescription());
+        Optional<UnitOfMeasure> uomOptional = unitOfMeasureRepository.findByDescription("Teaspoon");
+
+        assertEquals("Teaspoon", uomOptional.get().getDescription());
     }
 
     @Test
-    public void testFindByDescriptionTeaSpoon() {
-        Optional<UnitOfMeasure> unitOfMeasureOptional = unitOfMeasureRepository.findByDescription("TeaSpoon");
+    void testFindByDescriptionCup() {
 
-        assertEquals("TeaSpoon", unitOfMeasureOptional.get().getDescription());
+        Optional<UnitOfMeasure> uomOptional = unitOfMeasureRepository.findByDescription("Cup");
+
+        assertEquals("Cup", uomOptional.get().getDescription());
     }
 
 }

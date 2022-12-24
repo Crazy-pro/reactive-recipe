@@ -1,7 +1,9 @@
 package alex.klimchuk.recipe.domain;
 
-import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Set;
 
@@ -9,23 +11,20 @@ import java.util.Set;
  * Copyright Alex Klimchuk (c) 2022.
  */
 @Data
-@Entity
 @Builder
+@Document
 @ToString
 @EqualsAndHashCode(exclude = {"recipes"})
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "category")
 public class Category {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "description")
     private String description;
 
-    @ManyToMany(mappedBy = "categories")
+    @DBRef
     private Set<Recipe> recipes;
 
 }

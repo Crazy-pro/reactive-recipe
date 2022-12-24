@@ -1,7 +1,9 @@
 package alex.klimchuk.recipe.domain;
 
-import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.HashSet;
 import java.util.Objects;
@@ -11,58 +13,42 @@ import java.util.Set;
  * Copyright Alex Klimchuk (c) 2022.
  */
 @Data
-@Entity
 @Builder
+@Document
 @ToString
 @EqualsAndHashCode(exclude = {"difficulty", "ingredients", "categories"})
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "recipe")
 public class Recipe {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "description")
     private String description;
 
-    @Column(name = "prep_time")
     private Integer prepTime;
 
-    @Column(name = "cook_time")
     private Integer cookTime;
 
-    @Column(name = "servings")
     private Integer servings;
 
-    @Column(name = "source")
     private String source;
 
-    @Column(name = "url")
     private String url;
 
-    @Lob
-    @Column(name = "directions")
     private String directions;
 
-    @Enumerated(value = EnumType.STRING)
+    @DBRef
     private Difficulty difficulty;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "recipe")
+    @DBRef
     private Set<Ingredient> ingredients = new HashSet<>();
 
-    @Lob
-    @Column(name = "image")
     private Byte[] image;
 
-    @OneToOne(cascade = CascadeType.ALL)
     private Notes notes;
 
-    @ManyToMany
-    @JoinTable(name = "recipe_category",
-            joinColumns = @JoinColumn(name = "recipe_id"),
-            inverseJoinColumns = @JoinColumn(name = "category_id"))
+    @DBRef
     private Set<Category> categories = new HashSet<>();
 
     public void setNotes(Notes notes) {
