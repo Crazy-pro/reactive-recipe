@@ -86,7 +86,7 @@ public class RecipeControllerTest {
 
     @Test
     public void testPostNewRecipeForm() throws Exception {
-        when(recipeService.saveRecipeDto(any())).thenReturn(recipeDtoMock);
+        when(recipeService.saveRecipeDto(any())).thenReturn(Mono.just(recipeDtoMock));
 
         mockMvc.perform(post("/recipe")
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED)
@@ -99,7 +99,7 @@ public class RecipeControllerTest {
 
     @Test
     public void testPostNewRecipeFormValidationFail() throws Exception {
-        when(recipeService.saveRecipeDto(any())).thenReturn(recipeDtoMock);
+        when(recipeService.saveRecipeDto(any())).thenReturn(Mono.just(recipeDtoMock));
 
         mockMvc.perform(post("/recipe")
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED)
@@ -112,7 +112,7 @@ public class RecipeControllerTest {
 
     @Test
     public void testGetUpdateView() throws Exception {
-        when(recipeService.findDtoById(anyString())).thenReturn(recipeDtoMock);
+        when(recipeService.findDtoById(anyString())).thenReturn(Mono.just(recipeDtoMock));
 
         mockMvc.perform(get("/recipe/1/update"))
                 .andExpect(status().isOk())

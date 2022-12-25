@@ -54,7 +54,7 @@ public class IngredientControllerTest {
     public void testListIngredients() throws Exception {
         RecipeDto recipeDtoMock = new RecipeDto();
 
-        when(recipeService.findDtoById(anyString())).thenReturn(recipeDtoMock);
+        when(recipeService.findDtoById(anyString())).thenReturn(Mono.just(recipeDtoMock));
 
         mockMvc.perform(get("/recipe/1/ingredients"))
                 .andExpect(status().isOk())
@@ -82,7 +82,7 @@ public class IngredientControllerTest {
         RecipeDto recipeDtoMock = new RecipeDto();
         recipeDtoMock.setId("1");
 
-        when(recipeService.findDtoById(anyString())).thenReturn(recipeDtoMock);
+        when(recipeService.findDtoById(anyString())).thenReturn(Mono.just(recipeDtoMock));
         when(unitOfMeasureService.findAll()).thenReturn(Flux.just(new UnitOfMeasureDto()));
 
         mockMvc.perform(get("/recipe/1/ingredient/new"))

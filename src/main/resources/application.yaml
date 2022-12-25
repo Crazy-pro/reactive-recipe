@@ -3,5 +3,9 @@ spring:
     level: debug
   data:
     mongodb:
-      port: 0
+      authentication-database: admin
+      database: embedded
+      username: root
+      password: root
       host: localhost
+      port: 0

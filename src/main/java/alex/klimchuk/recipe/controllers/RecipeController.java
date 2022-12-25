@@ -46,8 +46,7 @@ public class RecipeController {
     @PostMapping("/recipe")
     public String saveOrUpdate(@Valid @ModelAttribute RecipeDto recipeDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            bindingResult.getAllErrors().forEach(ex ->
-                    log.debug("Something wrong here: ", ex.toString()));
+            bindingResult.getAllErrors().forEach(ex -> log.debug("Something wrong here: ", ex.toString()));
             return "/recipe/recipeForm";
         }
         RecipeDto savedRecipeDto = recipeService.saveRecipeDto(recipeDto).block();
@@ -56,7 +55,7 @@ public class RecipeController {
 
     @GetMapping("/recipe/{id}/delete")
     public String deleteById(@PathVariable String id) {
-        recipeService.deleteById(id);
+        recipeService.deleteById(id).block();
         return "redirect:/";
     }
 

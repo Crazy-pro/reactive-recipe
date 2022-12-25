@@ -18,6 +18,6 @@ public interface RecipeService {
 
     Mono<RecipeDto> saveRecipeDto(RecipeDto recipeDto);
 
-    void deleteById(String id);
+    Mono<Void> deleteById(String id);
 
 }

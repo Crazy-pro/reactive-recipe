@@ -103,37 +103,37 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
         Optional<UnitOfMeasure> eachUomOptional = unitOfMeasureRepository.findByDescription("Each");
 
         if(eachUomOptional.isEmpty()){
-            throw new RuntimeException("Each UOM Not Found!");
+            throw new RuntimeException("Each UnitOfMeasure Not Found!");
         }
 
         Optional<UnitOfMeasure> tableSpoonUomOptional = unitOfMeasureRepository.findByDescription("TableSpoon");
 
         if(tableSpoonUomOptional.isEmpty()){
-            throw new RuntimeException("TableSpoon UOM Not Found!");
+            throw new RuntimeException("TableSpoon UnitOfMeasure Not Found!");
         }
 
         Optional<UnitOfMeasure> teaSpoonUomOptional = unitOfMeasureRepository.findByDescription("TeaSpoon");
 
         if(teaSpoonUomOptional.isEmpty()){
-            throw new RuntimeException("TeaSpoon UOM Not Found!");
+            throw new RuntimeException("TeaSpoon UnitOfMeasure Not Found!");
         }
 
         Optional<UnitOfMeasure> dashUomOptional = unitOfMeasureRepository.findByDescription("Dash");
 
         if(dashUomOptional.isEmpty()){
-            throw new RuntimeException("Dash UOM Not Found");
+            throw new RuntimeException("Dash UnitOfMeasure Not Found");
         }
 
         Optional<UnitOfMeasure> pintUomOptional = unitOfMeasureRepository.findByDescription("Pint");
 
         if(pintUomOptional.isEmpty()){
-            throw new RuntimeException("Pint UOM Not Found");
+            throw new RuntimeException("Pint UnitOfMeasure Not Found");
         }
 
         Optional<UnitOfMeasure> cupsUomOptional = unitOfMeasureRepository.findByDescription("Cup");
 
         if(cupsUomOptional.isEmpty()){
-            throw new RuntimeException("Cups UOM Not Found");
+            throw new RuntimeException("Cups UnitOfMeasure Not Found");
         }
 
         // Get optionals

@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 @DataMongoTest
 @RunWith(SpringRunner.class)
-class UnitOfMeasureRepositoryIT {
+public class UnitOfMeasureRepositoryIT {
 
     @Autowired
     UnitOfMeasureRepository unitOfMeasureRepository;
@@ -30,8 +30,7 @@ class UnitOfMeasureRepositoryIT {
     RecipeRepository recipeRepository;
 
     @BeforeEach
-    void setUp() {
-
+    public void setUp() {
         recipeRepository.deleteAll();
         unitOfMeasureRepository.deleteAll();
         categoryRepository.deleteAll();
@@ -43,16 +42,14 @@ class UnitOfMeasureRepositoryIT {
 
     @Test
     //@DirtiesContext
-    void testFindByDescription() {
-
+    public void testFindByDescription() {
         Optional<UnitOfMeasure> uomOptional = unitOfMeasureRepository.findByDescription("Teaspoon");
 
         assertEquals("Teaspoon", uomOptional.get().getDescription());
     }
 
     @Test
-    void testFindByDescriptionCup() {
-
+    public void testFindByDescriptionCup() {
         Optional<UnitOfMeasure> uomOptional = unitOfMeasureRepository.findByDescription("Cup");
 
         assertEquals("Cup", uomOptional.get().getDescription());

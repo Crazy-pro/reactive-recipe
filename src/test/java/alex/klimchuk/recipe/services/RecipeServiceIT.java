@@ -12,6 +12,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Objects;
+
 import static org.junit.Assert.*;
 
 /**
@@ -36,17 +38,16 @@ public class RecipeServiceIT {
     RecipeToRecipeDto recipeToRecipeDto;
 
     @Test
-    @Transactional
     public void testSaveRecipeDto() {
         Iterable<Recipe> recipes = recipeRepository.findAll();
         Recipe testRecipe = recipes.iterator().next();
 
         RecipeDto recipeDtoMock = recipeToRecipeDto.convert(testRecipe);
 
-        assert recipeDtoMock != null;
+        assert Objects.nonNull(recipeDtoMock);
         recipeDtoMock.setDescription(NEW_DESCRIPTION);
 
-        RecipeDto savedRecipeDto = recipeService.saveRecipeDto(recipeDtoMock);
+        RecipeDto savedRecipeDto = recipeService.saveRecipeDto(recipeDtoMock).block();
 
         assertEquals(NEW_DESCRIPTION, savedRecipeDto.getDescription());
         assertEquals(testRecipe.getId(), savedRecipeDto.getId());

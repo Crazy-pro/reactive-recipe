@@ -12,16 +12,12 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Builder
 @Document
 @ToString
-@EqualsAndHashCode(exclude = {"recipe"})
 @NoArgsConstructor
 @AllArgsConstructor
 public class Notes {
 
     @Id
     private String id;
-
-    @DBRef
-    private Recipe recipe;
 
     private String recipeNotes;
 

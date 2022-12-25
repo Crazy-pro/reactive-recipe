@@ -2,15 +2,10 @@ package alex.klimchuk.recipe.services.impl;
 
 import alex.klimchuk.recipe.dto.UnitOfMeasureDto;
 import alex.klimchuk.recipe.converters.UnitOfMeasureToUnitOfMeasureDto;
-import alex.klimchuk.recipe.repositories.UnitOfMeasureRepository;
 import alex.klimchuk.recipe.repositories.reactive.UnitOfMeasureReactiveRepository;
 import alex.klimchuk.recipe.services.UnitOfMeasureService;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
-
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 /**
  * Copyright Alex Klimchuk (c) 2022.
@@ -30,7 +25,7 @@ public class UnitOfMeasureServiceImpl implements UnitOfMeasureService {
     @Override
     public Flux<UnitOfMeasureDto> findAll() {
         return unitOfMeasureReactiveRepository.findAll()
-                .map(unitOfMeasureToUnitOfMeasureDto::convert);
+                .mapNotNull(unitOfMeasureToUnitOfMeasureDto::convert);
     }
 
 }

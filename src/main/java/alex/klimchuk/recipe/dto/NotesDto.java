@@ -13,6 +13,7 @@ import lombok.*;
 public class NotesDto {
 
     private String id;
+
     private String recipeNotes;
 
 }

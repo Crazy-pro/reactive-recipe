@@ -53,7 +53,7 @@ public class RecipeServiceImplTest {
 
         List<Recipe> recipes = recipeService.getRecipes().collectList().block();
 
-        assertEquals(recipes.size(), 1);
+        assertEquals(1,recipes.size());
         verify(recipeReactiveRepository, times(1)).findAll();
         verify(recipeReactiveRepository, never()).findById(anyString());
     }
@@ -84,7 +84,7 @@ public class RecipeServiceImplTest {
 
         when(recipeToRecipeDto.convert(any())).thenReturn(recipeDtoMock);
 
-        RecipeDto recipeDto = recipeService.findDtoById("1");
+        RecipeDto recipeDto = recipeService.findDtoById("1").block();
 
         assertNotNull("Null recipe returned", recipeDto);
         verify(recipeReactiveRepository, times(1)).findById(anyString());
@@ -93,7 +93,11 @@ public class RecipeServiceImplTest {
 
     @Test
     public void testDeleteById() {
-        recipeService.deleteById("2");
+        String idToDelete = "2";
+
+        when(recipeReactiveRepository.deleteById(anyString())).thenReturn(Mono.empty());
+
+        recipeService.deleteById(idToDelete).block();
 
         verify(recipeReactiveRepository, times(1)).deleteById(anyString());
     }

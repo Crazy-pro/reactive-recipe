@@ -17,7 +17,7 @@ public class CategoryTest {
     }
 
     @Test
-    public void getId() {
+    public void testGetId() {
         String id = "4";
         category.setId(id);
 
@@ -25,12 +25,12 @@ public class CategoryTest {
     }
 
     @Test
-    public void getDescription() {
+    public void testGetDescription() {
 
     }
 
     @Test
-    void getRecipes() {
+    public void testGetRecipes() {
 
     }
 

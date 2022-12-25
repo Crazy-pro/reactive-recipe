@@ -39,16 +39,13 @@ public class IngredientController {
     }
 
     @GetMapping("/{recipeId}/ingredient/{id}/show")
-    public String showRecipeIngredient(@PathVariable String recipeId,
-                                       @PathVariable String id, Model model) {
+    public String showRecipeIngredient(@PathVariable String recipeId, @PathVariable String id, Model model) {
         model.addAttribute("ingredient", ingredientService.findByRecipeIdAndIngredientId(recipeId, id).block());
         return "recipe/ingredient/show";
     }
 
     @GetMapping("/{recipeId}/ingredient/new")
     public String newRecipe(@PathVariable String recipeId, Model model) {
-        RecipeDto recipeDto = recipeService.findDtoById(recipeId).block();
-
         IngredientDto ingredientDto = new IngredientDto();
         ingredientDto.setRecipeId(recipeId);
         model.addAttribute("ingredient", ingredientDto);
@@ -60,8 +57,7 @@ public class IngredientController {
     }
 
     @GetMapping("/{recipeId}/ingredient/{id}/update")
-    public String updateRecipeIngredient(@PathVariable String recipeId,
-                                         @PathVariable String id, Model model) {
+    public String updateRecipeIngredient(@PathVariable String recipeId, @PathVariable String id, Model model) {
         model.addAttribute("ingredient", ingredientService.findByRecipeIdAndIngredientId(recipeId, id).block());
         model.addAttribute("uomList", unitOfMeasureService.findAll().collectList().block());
         return "recipe/ingredient/ingredientForm";

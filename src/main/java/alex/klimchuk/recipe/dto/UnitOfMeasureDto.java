@@ -13,6 +13,7 @@ import lombok.*;
 public class UnitOfMeasureDto {
 
     private String id;
+
     private String description;
 
 }

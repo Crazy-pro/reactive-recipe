@@ -72,7 +72,7 @@ public class IngredientServiceImpl implements IngredientService {
                 ingredientFound.setAmount(ingredientDto.getAmount());
                 ingredientFound.setUnitOfMeasure(unitOfMeasureReactiveRepository
                         .findById(ingredientDto.getUnitOfMeasure().getId()).block());
-                if (ingredientFound.getUnitOfMeasure() == null) {
+                if (Objects.isNull(ingredientFound.getUnitOfMeasure()) ) {
                     new RuntimeException("UnitOfMeasure Not Found!");
                 }
             } else {
@@ -108,7 +108,7 @@ public class IngredientServiceImpl implements IngredientService {
 
        Recipe recipe = recipeReactiveRepository.findById(recipeId).block();
 
-        if (recipe != null) {
+        if (Objects.nonNull(recipe)) {
             log.debug("Found recipe");
 
             Optional<Ingredient> ingredientOptional = recipe

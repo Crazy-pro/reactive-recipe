@@ -29,7 +29,7 @@ public class ImageServiceImpl implements ImageService {
                 .map(recipe -> {
                     Byte[] byteObjects = new Byte[0];
                     try {
-                         byteObjects = new Byte[file.getBytes().length];
+                        byteObjects = new Byte[file.getBytes().length];
 
                         int i = 0;
 
@@ -38,6 +38,7 @@ public class ImageServiceImpl implements ImageService {
                         }
 
                         recipe.setImage(byteObjects);
+
                         return recipe;
                     } catch (IOException e) {
                         log.error("Error occurred: ", e);

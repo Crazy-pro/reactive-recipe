@@ -56,12 +56,13 @@ public class RecipeServiceImpl implements RecipeService {
     @Override
     public Mono<RecipeDto> saveRecipeDto(RecipeDto recipeDto) {
         return recipeReactiveRepository.save(recipeDtoToRecipe.convert(recipeDto))
-                .map(recipeToRecipeDto::convert);
+                .mapNotNull(recipeToRecipeDto::convert);
     }
 
     @Override
-    public void deleteById(String id) {
+    public Mono<Void> deleteById(String id) {
         recipeReactiveRepository.deleteById(id).block();
+        return Mono.empty();
     }
 
 }
