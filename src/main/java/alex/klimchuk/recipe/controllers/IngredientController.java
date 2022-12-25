@@ -9,6 +9,8 @@ import alex.klimchuk.recipe.services.UnitOfMeasureService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -23,6 +25,8 @@ public class IngredientController {
     private final RecipeService recipeService;
     private final UnitOfMeasureService unitOfMeasureService;
 
+    private WebDataBinder webDataBinder;
+
     public IngredientController(IngredientService ingredientService, RecipeService recipeService,
                                 UnitOfMeasureService unitOfMeasureService) {
         this.ingredientService = ingredientService;
@@ -30,17 +34,22 @@ public class IngredientController {
         this.unitOfMeasureService = unitOfMeasureService;
     }
 
+    @InitBinder("ingredient")
+    public void initBinder(WebDataBinder webDataBinder) {
+        this.webDataBinder = webDataBinder;
+    }
+
     @GetMapping("/{recipeId}/ingredients")
     public String listIngredients(@PathVariable String recipeId, Model model) {
         log.debug("Getting ingredient list for recipe id: " + recipeId);
 
-        model.addAttribute("recipe", recipeService.findDtoById(recipeId).block());
+        model.addAttribute("recipe", recipeService.findDtoById(recipeId));
         return "recipe/ingredient/list";
     }
 
     @GetMapping("/{recipeId}/ingredient/{id}/show")
     public String showRecipeIngredient(@PathVariable String recipeId, @PathVariable String id, Model model) {
-        model.addAttribute("ingredient", ingredientService.findByRecipeIdAndIngredientId(recipeId, id).block());
+        model.addAttribute("ingredient", ingredientService.findByRecipeIdAndIngredientId(recipeId, id));
         return "recipe/ingredient/show";
     }
 
@@ -52,19 +61,29 @@ public class IngredientController {
 
         ingredientDto.setUnitOfMeasure(new UnitOfMeasureDto());
 
-        model.addAttribute("uomList", unitOfMeasureService.findAll().collectList().block());
+        model.addAttribute("uomList", unitOfMeasureService.findAll());
         return "recipe/ingredient/ingredientForm";
     }
 
     @GetMapping("/{recipeId}/ingredient/{id}/update")
     public String updateRecipeIngredient(@PathVariable String recipeId, @PathVariable String id, Model model) {
         model.addAttribute("ingredient", ingredientService.findByRecipeIdAndIngredientId(recipeId, id).block());
-        model.addAttribute("uomList", unitOfMeasureService.findAll().collectList().block());
+        model.addAttribute("uomList", unitOfMeasureService.findAll());
         return "recipe/ingredient/ingredientForm";
     }
 
     @PostMapping("/{recipeId}/ingredient")
-    public String saveOrUpdate(@ModelAttribute IngredientDto ingredientDto) {
+    public String saveOrUpdate(@ModelAttribute("ingredient") IngredientDto ingredientDto, Model model ){
+        webDataBinder.validate();
+        BindingResult bindingResult = webDataBinder.getBindingResult();
+
+        if (bindingResult.hasErrors()) {
+            bindingResult.getAllErrors().forEach(ex -> log.debug("Something wrong here: ", ex.toString()));
+
+            model.addAttribute("unitOfMeasureList", unitOfMeasureService.findAll());
+            return "recipe/ingredient/ingredientForm";
+        }
+
         IngredientDto savedDto = ingredientService.saveIngredientDto(ingredientDto).block();
 
         log.debug("Saved recipe id: " + savedDto.getRecipeId());
