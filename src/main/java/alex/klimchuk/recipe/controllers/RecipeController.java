@@ -2,7 +2,6 @@ package alex.klimchuk.recipe.controllers;
 
 import alex.klimchuk.recipe.dto.RecipeDto;
 import alex.klimchuk.recipe.services.RecipeService;
-import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -44,7 +43,7 @@ public class RecipeController {
     }
 
     @PostMapping("/recipe")
-    public String saveOrUpdate(@Valid @ModelAttribute RecipeDto recipeDto, BindingResult bindingResult) {
+    public String saveOrUpdate(@ModelAttribute RecipeDto recipeDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             bindingResult.getAllErrors().forEach(ex -> log.debug("Something wrong here: ", ex.toString()));
             return "/recipe/recipeForm";

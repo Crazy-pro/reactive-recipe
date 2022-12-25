@@ -2,15 +2,10 @@ package alex.klimchuk.recipe.bootstrap;
 
 import alex.klimchuk.recipe.domain.*;
 import alex.klimchuk.recipe.repositories.*;
-import alex.klimchuk.recipe.repositories.reactive.CategoryReactiveRepository;
-import alex.klimchuk.recipe.repositories.reactive.RecipeReactiveRepository;
-import alex.klimchuk.recipe.repositories.reactive.UnitOfMeasureReactiveRepository;
-import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
