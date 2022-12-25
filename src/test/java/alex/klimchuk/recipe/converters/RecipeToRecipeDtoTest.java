@@ -25,7 +25,7 @@ public class RecipeToRecipeDtoTest {
     public static final String SOURCE = "Source";
     public static final String URL = "Some URL";
     public static final String CATEGORY_ID_1 = "1";
-    public static final String CATEGORY_ID2 = "2";
+    public static final String CATEGORY_ID_2 = "2";
     public static final String INGREDIENT_ID_1 = "3";
     public static final String INGREDIENT_ID_2 = "4";
     public static final String NOTES_ID ="9";

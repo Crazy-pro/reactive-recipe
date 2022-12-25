@@ -1,12 +1,13 @@
 package alex.klimchuk.recipe.services;
 
 import org.springframework.web.multipart.MultipartFile;
+import reactor.core.publisher.Mono;
 
 /**
  * Copyright Alex Klimchuk (c) 2022.
  */
 public interface ImageService {
 
-    void saveImageFile(String recipeId, MultipartFile file);
+    Mono<Void> saveImageFile(String recipeId, MultipartFile file);
 
 }

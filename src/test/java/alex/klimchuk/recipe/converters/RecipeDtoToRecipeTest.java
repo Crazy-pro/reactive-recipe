@@ -28,11 +28,11 @@ public class RecipeDtoToRecipeTest {
     public static final Integer SERVINGS = Integer.valueOf("3");
     public static final String SOURCE = "Source";
     public static final String URL = "Some URL";
-    public static final Long CAT_ID_1 = 1L;
-    public static final Long CAT_ID2 = 2L;
+    public static final String CATEGORY_ID_1 = "1";
+    public static final String CATEGORY_ID2 = "2";
     public static final String INGREDIENT_ID_1 = "3";
     public static final String INGREDIENT_ID_2 = "4";
-    public static final Long NOTES_ID = 9L;
+    public static final String NOTES_ID = "9";
 
     RecipeDtoToRecipe converter;
 
@@ -60,10 +60,10 @@ public class RecipeDtoToRecipeTest {
         notes.setId(NOTES_ID);
 
         CategoryDto category = new CategoryDto();
-        category.setId(CAT_ID_1);
+        category.setId(CATEGORY_ID_1);
 
         CategoryDto category2 = new CategoryDto();
-        category2.setId(CAT_ID2);
+        category2.setId(CATEGORY_ID2);
 
         IngredientDto ingredient = new IngredientDto();
         ingredient.setId(INGREDIENT_ID_1);

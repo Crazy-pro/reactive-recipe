@@ -13,7 +13,7 @@ import static org.junit.Assert.*;
 public class UnitOfMeasureDtoToUnitOfMeasureTest {
 
     public static final String DESCRIPTION = "description";
-    public static final Long LONG_VALUE = 1L;
+    public static final String ID_VALUE = "1";
 
     UnitOfMeasureDtoToUnitOfMeasure unitOfMeasureDtoConverter;
 
@@ -35,14 +35,14 @@ public class UnitOfMeasureDtoToUnitOfMeasureTest {
     @Test
     public void testConvert() {
         UnitOfMeasureDto unitOfMeasureDto = UnitOfMeasureDto.builder()
-                .id(LONG_VALUE)
+                .id(ID_VALUE)
                 .description(DESCRIPTION)
                 .build();
 
         UnitOfMeasure unitOfMeasure = unitOfMeasureDtoConverter.convert(unitOfMeasureDto);
 
         assertNotNull(unitOfMeasure);
-        assertEquals(LONG_VALUE, unitOfMeasure.getId());
+        assertEquals(ID_VALUE, unitOfMeasure.getId());
         assertEquals(DESCRIPTION, unitOfMeasure.getDescription());
     }
 

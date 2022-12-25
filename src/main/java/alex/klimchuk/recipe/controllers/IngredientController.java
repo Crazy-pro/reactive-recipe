@@ -34,7 +34,7 @@ public class IngredientController {
     public String listIngredients(@PathVariable String recipeId, Model model) {
         log.debug("Getting ingredient list for recipe id: " + recipeId);
 
-        model.addAttribute("recipe", recipeService.findDtoById(Long.valueOf(recipeId)));
+        model.addAttribute("recipe", recipeService.findDtoById(recipeId).block());
         return "recipe/ingredient/list";
     }
 
@@ -47,7 +47,7 @@ public class IngredientController {
 
     @GetMapping("/{recipeId}/ingredient/new")
     public String newRecipe(@PathVariable String recipeId, Model model) {
-        RecipeDto recipeDto = recipeService.findDtoById(Long.valueOf(recipeId));
+        RecipeDto recipeDto = recipeService.findDtoById(recipeId).block();
 
         IngredientDto ingredientDto = new IngredientDto();
         ingredientDto.setRecipeId(recipeId);
@@ -78,8 +78,7 @@ public class IngredientController {
     }
 
     @GetMapping("/{recipeId}/ingredient/{id}/delete")
-    public String deleteIngredient(@PathVariable String recipeId,
-                                   @PathVariable String id) {
+    public String deleteIngredient(@PathVariable String recipeId, @PathVariable String id) {
         log.debug("Deleting ingredient id: " + id);
         ingredientService.deleteById(recipeId, id).block();
 
