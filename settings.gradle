@@ -4,4 +4,4 @@ pluginManagement {
 		gradlePluginPortal()
 	}
 }
-rootProject.name = 'recipe-mongodb'
+rootProject.name = 'reactive-recipe'
