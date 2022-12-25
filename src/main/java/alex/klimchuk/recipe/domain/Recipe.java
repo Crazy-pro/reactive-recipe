@@ -22,7 +22,7 @@ import java.util.Set;
 public class Recipe {
 
     @Id
-    private Long id;
+    private String id;
 
     private String description;
 

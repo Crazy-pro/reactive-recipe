@@ -4,9 +4,12 @@ import alex.klimchuk.recipe.dto.IngredientDto;
 import alex.klimchuk.recipe.converters.*;
 import alex.klimchuk.recipe.domain.*;
 import alex.klimchuk.recipe.repositories.*;
+import alex.klimchuk.recipe.repositories.reactive.RecipeReactiveRepository;
+import alex.klimchuk.recipe.repositories.reactive.UnitOfMeasureReactiveRepository;
 import alex.klimchuk.recipe.services.impl.IngredientServiceImpl;
 import org.junit.*;
 import org.mockito.*;
+import reactor.core.publisher.Mono;
 
 import java.util.Optional;
 
@@ -23,10 +26,10 @@ public class IngredientServiceImplTest {
     private final IngredientDtoToIngredient ingredientDtoToIngredient;
 
     @Mock
-    RecipeRepository recipeRepository;
+    RecipeReactiveRepository recipeReactiveRepository;
 
     @Mock
-    UnitOfMeasureRepository unitOfMeasureRepository;
+    UnitOfMeasureReactiveRepository unitOfMeasureReactiveRepository;
 
     IngredientService ingredientService;
 
@@ -40,13 +43,13 @@ public class IngredientServiceImplTest {
         MockitoAnnotations.openMocks(this);
 
         ingredientService = new IngredientServiceImpl(ingredientToIngredientDto, ingredientDtoToIngredient,
-                recipeRepository, unitOfMeasureRepository);
+                recipeReactiveRepository, unitOfMeasureReactiveRepository);
     }
 
     @Test
     public void testFindByRecipeIdAndRecipeIdHappyPath() {
         Recipe recipe = new Recipe();
-        recipe.setId(1L);
+        recipe.setId("1");
 
         Ingredient ingredient1 = new Ingredient();
         ingredient1.setId("1");
@@ -60,37 +63,34 @@ public class IngredientServiceImplTest {
         recipe.addIngredient(ingredient1);
         recipe.addIngredient(ingredient2);
         recipe.addIngredient(ingredient3);
-        Optional<Recipe> recipeOptional = Optional.of(recipe);
 
-        when(recipeRepository.findById(anyLong())).thenReturn(recipeOptional);
+        when(recipeReactiveRepository.findById(anyString())).thenReturn(Mono.just(recipe));
 
-        IngredientDto ingredientDto = ingredientService.findByRecipeIdAndIngredientId(1L, 3L);
+        IngredientDto ingredientDto = ingredientService.findByRecipeIdAndIngredientId("1","3").block();
 
         assertEquals("3", ingredientDto.getId());
         assertEquals("1", ingredientDto.getRecipeId());
-        verify(recipeRepository, times(1)).findById(anyLong());
+        verify(recipeReactiveRepository, times(1)).findById(anyString());
     }
 
     @Test
     public void testSaveRecipeDto() {
         IngredientDto ingredientDtoMock = new IngredientDto();
         ingredientDtoMock.setId("3");
-        ingredientDtoMock.setRecipeId(2L);
-
-        Optional<Recipe> recipeOptional = Optional.of(new Recipe());
+        ingredientDtoMock.setRecipeId("2");
 
         Recipe savedRecipe = new Recipe();
         savedRecipe.addIngredient(new Ingredient());
         savedRecipe.getIngredients().iterator().next().setId("3");
 
-        when(recipeRepository.findById(anyLong())).thenReturn(recipeOptional);
-        when(recipeRepository.save(any())).thenReturn(savedRecipe);
+        when(recipeReactiveRepository.findById(anyString())).thenReturn(Mono.just(new Recipe()));
+        when(recipeReactiveRepository.save(any())).thenReturn(Mono.just(savedRecipe));
 
-        IngredientDto savedDto = ingredientService.saveIngredientDto(ingredientDtoMock);
+        IngredientDto savedDto = ingredientService.saveIngredientDto(ingredientDtoMock).block();
 
         assertEquals("3", savedDto.getId());
-        verify(recipeRepository, times(1)).findById(anyLong());
-        verify(recipeRepository, times(1)).save(any(Recipe.class));
+        verify(recipeReactiveRepository, times(1)).findById(anyString());
+        verify(recipeReactiveRepository, times(1)).save(any(Recipe.class));
     }
 
     @Test
@@ -103,14 +103,12 @@ public class IngredientServiceImplTest {
 
         ingredient.setRecipe(recipe);
 
-        Optional<Recipe> recipeOptional = Optional.of(recipe);
+        when(recipeReactiveRepository.findById(anyString())).thenReturn(Mono.just(new Recipe()));
 
-        when(recipeRepository.findById(anyLong())).thenReturn(recipeOptional);
+        ingredientService.deleteById("1","3");
 
-        ingredientService.deleteById(1L, 3L);
-
-        verify(recipeRepository, times(1)).findById(anyLong());
-        verify(recipeRepository, times(1)).save(any(Recipe.class));
+        verify(recipeReactiveRepository, times(1)).findById(anyString());
+        verify(recipeReactiveRepository, times(1)).save(any(Recipe.class));
     }
 
 }
