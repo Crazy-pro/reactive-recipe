@@ -12,8 +12,10 @@ import org.springframework.test.web.servlet.MockMvcBuilderSupport;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.ui.Model;
+import reactor.core.publisher.Flux;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -54,20 +56,21 @@ public class IndexControllerTest {
     public void testGetIndexPage() {
         Set<Recipe> recipesMock = new HashSet<>();
         Recipe recipe = new Recipe();
-        recipe.setId(1L);
+        recipe.setId("1");
         recipesMock.add(recipe);
 
-        when(recipeService.getRecipes()).thenReturn(recipesMock);
+        when(recipeService.getRecipes()).thenReturn(Flux.fromIterable(recipesMock));
 
-        ArgumentCaptor<Set<Recipe>> argumentCaptor = ArgumentCaptor.forClass(Set.class);
+        ArgumentCaptor<Flux<Recipe>> argumentCaptor = ArgumentCaptor.forClass(Flux.class);
 
-        Set<Recipe> recipes = argumentCaptor.getValue();
         String viewName = indexController.getIndexPage(model);
 
         assertEquals("index", viewName);
-        assertEquals(1, recipes.size());
         verify(recipeService, times(1)).getRecipes();
         verify(model, times(1)).addAttribute(eq("recipes"), argumentCaptor.capture());
+        Flux<Recipe> fluxInController = argumentCaptor.getValue();
+        List<Recipe> recipes = fluxInController.collectList().block();
+        assertEquals(2, recipes.size());
     }
 
 }

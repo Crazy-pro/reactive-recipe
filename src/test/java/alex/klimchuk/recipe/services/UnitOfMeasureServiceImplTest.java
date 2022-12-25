@@ -41,10 +41,10 @@ public class UnitOfMeasureServiceImplTest {
     @Test
     public void testFindAll() {
         UnitOfMeasure unitOfMeasure1 = new UnitOfMeasure();
-        unitOfMeasure1.setId(1L);
+        unitOfMeasure1.setId("1");
 
         UnitOfMeasure unitOfMeasure2 = new UnitOfMeasure();
-        unitOfMeasure2.setId(2L);
+        unitOfMeasure2.setId("2");
 
         when(unitOfMeasureReactiveRepository.findAll()).thenReturn(Flux.just(unitOfMeasure1, unitOfMeasure2));
 

@@ -12,6 +12,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import reactor.core.publisher.Mono;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -45,13 +46,13 @@ public class RecipeControllerTest {
                 .setControllerAdvice(new ControllerExceptionHandler())
                 .build();
 
-        recipeMock = Recipe.builder().id(1L).build();
-        recipeDtoMock = RecipeDto.builder().id(2L).build();
+        recipeMock = Recipe.builder().id("1").build();
+        recipeDtoMock = RecipeDto.builder().id("2").build();
     }
 
     @Test
     public void testGetRecipe() throws Exception {
-        when(recipeService.findById(anyLong())).thenReturn(recipeMock);
+        when(recipeService.findById(anyString())).thenReturn(Mono.just(recipeMock));
 
         mockMvc.perform(get("/recipe/1/show"))
                 .andExpect(status().isOk())
@@ -61,7 +62,7 @@ public class RecipeControllerTest {
 
     @Test
     public void testGetRecipeNotFound() throws Exception {
-        when(recipeService.findById(anyLong())).thenThrow(NotFoundException.class);
+        when(recipeService.findById(anyString())).thenThrow(NotFoundException.class);
 
         mockMvc.perform(get("/recipe/1/show"))
                 .andExpect(status().isNotFound())
@@ -111,7 +112,7 @@ public class RecipeControllerTest {
 
     @Test
     public void testGetUpdateView() throws Exception {
-        when(recipeService.findDtoById(anyLong())).thenReturn(recipeDtoMock);
+        when(recipeService.findDtoById(anyString())).thenReturn(recipeDtoMock);
 
         mockMvc.perform(get("/recipe/1/update"))
                 .andExpect(status().isOk())
@@ -125,7 +126,7 @@ public class RecipeControllerTest {
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/"));
 
-        verify(recipeService, times(1)).deleteById(anyLong());
+        verify(recipeService, times(1)).deleteById(anyString());
     }
 
 }

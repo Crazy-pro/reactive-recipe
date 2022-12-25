@@ -5,13 +5,17 @@ import alex.klimchuk.recipe.converters.RecipeToRecipeDto;
 import alex.klimchuk.recipe.domain.Recipe;
 import alex.klimchuk.recipe.dto.RecipeDto;
 import alex.klimchuk.recipe.repositories.RecipeRepository;
+import alex.klimchuk.recipe.repositories.reactive.RecipeReactiveRepository;
 import alex.klimchuk.recipe.services.impl.RecipeServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -26,7 +30,7 @@ public class RecipeServiceImplTest {
     RecipeServiceImpl recipeService;
 
     @Mock
-    RecipeRepository recipeRepository;
+    RecipeReactiveRepository recipeReactiveRepository;
 
     @Mock
     RecipeToRecipeDto recipeToRecipeDto;
@@ -38,64 +42,60 @@ public class RecipeServiceImplTest {
     public void setUp() {
         MockitoAnnotations.openMocks(this);
 
-        recipeService = new RecipeServiceImpl(recipeRepository, recipeDtoToRecipe, recipeToRecipeDto);
+        recipeService = new RecipeServiceImpl(recipeReactiveRepository, recipeDtoToRecipe, recipeToRecipeDto);
     }
 
     @Test
     public void testGetRecipes() {
         Recipe recipe = new Recipe();
-        Set<Recipe> recipesMock = new HashSet<>();
-        recipesMock.add(recipe);
 
-        when(recipeService.getRecipes()).thenReturn(recipesMock);
+        when(recipeService.getRecipes()).thenReturn(Flux.just(recipe));
 
-        Set<Recipe> recipes = recipeService.getRecipes();
+        List<Recipe> recipes = recipeService.getRecipes().collectList().block();
 
         assertEquals(recipes.size(), 1);
-        verify(recipeRepository, times(1)).findAll();
-        verify(recipeRepository, never()).findById(anyLong());
+        verify(recipeReactiveRepository, times(1)).findAll();
+        verify(recipeReactiveRepository, never()).findById(anyString());
     }
 
     @Test
     public void testGetRecipeById() {
         Recipe recipe = new Recipe();
-        recipe.setId(1L);
-        Optional<Recipe> recipeOptional = Optional.of(recipe);
+        recipe.setId("1");
 
-        when(recipeRepository.findById(anyLong())).thenReturn(recipeOptional);
+        when(recipeReactiveRepository.findById(anyString())).thenReturn(Mono.just(recipe));
 
-        Recipe recipeReturned = recipeService.findById(1L);
+        Recipe recipeReturned = recipeService.findById("1").block();
 
         assertNotNull("Null recipe returned", recipeReturned);
-        verify(recipeRepository, times(1)).findById(anyLong());
-        verify(recipeRepository, never()).findAll();
+        verify(recipeReactiveRepository, times(1)).findById(anyString());
+        verify(recipeReactiveRepository, never()).findAll();
     }
 
     @Test
     public void testGetRecipeDtoById() {
         Recipe recipe = new Recipe();
-        recipe.setId(1L);
-        Optional<Recipe> recipeOptional = Optional.of(recipe);
+        recipe.setId("1");
 
-        when(recipeRepository.findById(anyLong())).thenReturn(recipeOptional);
+        when(recipeReactiveRepository.findById(anyString())).thenReturn(Mono.just(recipe));
 
         RecipeDto recipeDtoMock = new RecipeDto();
-        recipeDtoMock.setId(1L);
+        recipeDtoMock.setId("1");
 
         when(recipeToRecipeDto.convert(any())).thenReturn(recipeDtoMock);
 
-        RecipeDto recipeDto = recipeService.findDtoById(1L);
+        RecipeDto recipeDto = recipeService.findDtoById("1");
 
         assertNotNull("Null recipe returned", recipeDto);
-        verify(recipeRepository, times(1)).findById(anyLong());
-        verify(recipeRepository, never()).findAll();
+        verify(recipeReactiveRepository, times(1)).findById(anyString());
+        verify(recipeReactiveRepository, never()).findAll();
     }
 
     @Test
     public void testDeleteById() {
-        recipeService.deleteById(2L);
+        recipeService.deleteById("2");
 
-        verify(recipeRepository, times(1)).deleteById(anyLong());
+        verify(recipeReactiveRepository, times(1)).deleteById(anyString());
     }
 
 }

@@ -18,7 +18,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Notes {
 
     @Id
-    private Long id;
+    private String id;
 
     @DBRef
     private Recipe recipe;

@@ -47,15 +47,15 @@ public class ImageControllerTest {
     @Test
     public void testGetImageForm() throws Exception {
         RecipeDto recipeDtoMock = new RecipeDto();
-        recipeDtoMock.setId(1L);
+        recipeDtoMock.setId("1");
 
-        when(recipeService.findDtoById(anyLong())).thenReturn(recipeDtoMock);
+        when(recipeService.findDtoById(anyString())).thenReturn(recipeDtoMock);
 
         mockMvc.perform(get("/recipe/1/image"))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("recipe"));
 
-        verify(recipeService, times(1)).findDtoById(anyLong());
+        verify(recipeService, times(1)).findDtoById(anyString());
     }
 
     @Test
@@ -68,7 +68,7 @@ public class ImageControllerTest {
                 .andExpect(status().is3xxRedirection())
                 .andExpect(header().string("Location", "/recipe/1/show"));
 
-        verify(imageService, times(1)).saveImageFile(anyLong(), any());
+        verify(imageService, times(1)).saveImageFile(anyString(), any());
     }
 
 
@@ -84,10 +84,10 @@ public class ImageControllerTest {
         }
 
         RecipeDto recipeDtoMock = new RecipeDto();
-        recipeDtoMock.setId(1L);
+        recipeDtoMock.setId("1");
         recipeDtoMock.setImage(bytesBoxed);
 
-        when(recipeService.findDtoById(anyLong())).thenReturn(recipeDtoMock);
+        when(recipeService.findDtoById(anyString())).thenReturn(recipeDtoMock);
 
         MockHttpServletResponse response = mockMvc.perform(get("/recipe/1/recipeImage"))
                 .andExpect(status().isOk())

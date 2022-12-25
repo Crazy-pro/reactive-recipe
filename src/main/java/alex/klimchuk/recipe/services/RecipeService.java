@@ -2,22 +2,22 @@ package alex.klimchuk.recipe.services;
 
 import alex.klimchuk.recipe.domain.Recipe;
 import alex.klimchuk.recipe.dto.RecipeDto;
-
-import java.util.Set;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 /**
  * Copyright Alex Klimchuk (c) 2022.
  */
 public interface RecipeService {
 
-    Set<Recipe> getRecipes();
+    Flux<Recipe> getRecipes();
 
-    Recipe findById(Long id);
+    Mono<Recipe> findById(String id);
 
-    RecipeDto findDtoById(Long id);
+    Mono<RecipeDto> findDtoById(String id);
 
-    RecipeDto saveRecipeDto(RecipeDto recipeDto);
+    Mono<RecipeDto> saveRecipeDto(RecipeDto recipeDto);
 
-    void deleteById(Long id);
+    void deleteById(String id);
 
 }

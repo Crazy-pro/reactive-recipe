@@ -19,7 +19,7 @@ import static org.junit.Assert.*;
  */
 public class RecipeDtoToRecipeTest {
 
-    public static final Long RECIPE_ID = 1L;
+    public static final String RECIPE_ID = "1";
     public static final Integer COOK_TIME = Integer.valueOf("5");
     public static final Integer PREP_TIME = Integer.valueOf("7");
     public static final String DESCRIPTION = "My Recipe";

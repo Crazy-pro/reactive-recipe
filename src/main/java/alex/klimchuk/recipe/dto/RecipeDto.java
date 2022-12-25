@@ -23,7 +23,7 @@ import java.util.Set;
 @AllArgsConstructor
 public class RecipeDto {
 
-    private Long id;
+    private String id;
 
     @NotBlank
     @Size(min = 3, max = 255)

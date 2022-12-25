@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
+import java.util.Objects;
 
 /**
  * Copyright Alex Klimchuk (c) 2022.
@@ -28,21 +29,21 @@ public class ImageController {
 
     @GetMapping("recipe/{id}/image")
     public String showUploadForm(@PathVariable String id, Model model) {
-        model.addAttribute("recipe", recipeService.findDtoById(Long.valueOf(id)));
+        model.addAttribute("recipe", recipeService.findDtoById(id).block());
         return "recipe/imageUploadForm";
     }
 
     @PostMapping("recipe/{id}/image")
     public String saveImageFile(@PathVariable String id, @RequestParam("imagefile") MultipartFile file) {
-        imageService.saveImageFile(Long.valueOf(id), file);
+        imageService.saveImageFile(id, file);
         return "redirect:/recipe/" + id + "/show";
     }
 
     @GetMapping("recipe/{id}/recipeimage")
     public void renderImageFromDB(@PathVariable String id, HttpServletResponse response) throws IOException {
-        RecipeDto recipeDto = recipeService.findDtoById(Long.valueOf(id));
+        RecipeDto recipeDto = recipeService.findDtoById(id).block();
 
-        if (recipeDto.getImage() != null) {
+        if (Objects.nonNull(recipeDto.getImage())) {
             byte[] byteArray = new byte[recipeDto.getImage().length];
             int i = 0;
 

@@ -54,14 +54,14 @@ public class IngredientControllerTest {
     public void testListIngredients() throws Exception {
         RecipeDto recipeDtoMock = new RecipeDto();
 
-        when(recipeService.findDtoById(anyLong())).thenReturn(recipeDtoMock);
+        when(recipeService.findDtoById(anyString())).thenReturn(recipeDtoMock);
 
         mockMvc.perform(get("/recipe/1/ingredients"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("recipe/ingredient/list"))
                 .andExpect(model().attributeExists("recipe"));
 
-        verify(recipeService, times(1)).findDtoById(anyLong());
+        verify(recipeService, times(1)).findDtoById(anyString());
     }
 
     @Test
@@ -80,9 +80,9 @@ public class IngredientControllerTest {
     @Test
     public void testNewIngredientForm() throws Exception {
         RecipeDto recipeDtoMock = new RecipeDto();
-        recipeDtoMock.setId(1L);
+        recipeDtoMock.setId("1");
 
-        when(recipeService.findDtoById(anyLong())).thenReturn(recipeDtoMock);
+        when(recipeService.findDtoById(anyString())).thenReturn(recipeDtoMock);
         when(unitOfMeasureService.findAll()).thenReturn(Flux.just(new UnitOfMeasureDto()));
 
         mockMvc.perform(get("/recipe/1/ingredient/new"))
@@ -91,7 +91,7 @@ public class IngredientControllerTest {
                 .andExpect(model().attributeExists("ingredient"))
                 .andExpect(model().attributeExists("uomList"));
 
-        verify(recipeService, times(1)).findDtoById(anyLong());
+        verify(recipeService, times(1)).findDtoById(anyString());
     }
 
     @Test
