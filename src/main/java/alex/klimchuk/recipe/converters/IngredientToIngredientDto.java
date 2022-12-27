@@ -7,8 +7,6 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 
-import java.util.Objects;
-
 /**
  * Copyright Alex Klimchuk (c) 2022.
  */

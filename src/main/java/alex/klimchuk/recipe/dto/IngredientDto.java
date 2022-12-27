@@ -5,8 +5,6 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
-import java.math.BigDecimal;
-
 /**
  * Copyright Alex Klimchuk (c) 2022.
  */
@@ -26,7 +24,7 @@ public class IngredientDto {
 
     @Min(1)
     @NotNull
-    private BigDecimal amount;
+    private Double amount;
 
     @NotNull
     private UnitOfMeasureDto unitOfMeasure;
