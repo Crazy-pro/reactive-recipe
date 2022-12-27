@@ -1,7 +1,6 @@
 package alex.klimchuk.recipe.controllers;
 
 import alex.klimchuk.recipe.dto.IngredientDto;
-import alex.klimchuk.recipe.dto.RecipeDto;
 import alex.klimchuk.recipe.dto.UnitOfMeasureDto;
 import alex.klimchuk.recipe.services.IngredientService;
 import alex.klimchuk.recipe.services.RecipeService;
@@ -12,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Flux;
 
 /**
  * Copyright Alex Klimchuk (c) 2022.
@@ -61,14 +61,12 @@ public class IngredientController {
 
         ingredientDto.setUnitOfMeasure(new UnitOfMeasureDto());
 
-        model.addAttribute("uomList", unitOfMeasureService.findAll());
         return "recipe/ingredient/ingredientForm";
     }
 
     @GetMapping("/{recipeId}/ingredient/{id}/update")
     public String updateRecipeIngredient(@PathVariable String recipeId, @PathVariable String id, Model model) {
         model.addAttribute("ingredient", ingredientService.findByRecipeIdAndIngredientId(recipeId, id).block());
-        model.addAttribute("uomList", unitOfMeasureService.findAll());
         return "recipe/ingredient/ingredientForm";
     }
 
@@ -80,7 +78,6 @@ public class IngredientController {
         if (bindingResult.hasErrors()) {
             bindingResult.getAllErrors().forEach(ex -> log.debug("Something wrong here: ", ex.toString()));
 
-            model.addAttribute("unitOfMeasureList", unitOfMeasureService.findAll());
             return "recipe/ingredient/ingredientForm";
         }
 
@@ -98,6 +95,11 @@ public class IngredientController {
         ingredientService.deleteById(recipeId, id).block();
 
         return "redirect:/recipe/" + recipeId + "/ingredients";
+    }
+
+    @ModelAttribute("unitOfMeasureList")
+    public Flux<UnitOfMeasureDto> populateUnitOfMeasureList(){
+        return unitOfMeasureService.findAll();
     }
 
 }

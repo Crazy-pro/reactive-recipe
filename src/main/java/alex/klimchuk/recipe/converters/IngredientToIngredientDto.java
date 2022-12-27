@@ -25,18 +25,12 @@ public class IngredientToIngredientDto implements Converter<Ingredient, Ingredie
     @Nullable
     @Synchronized
     public IngredientDto convert(Ingredient ingredient) {
-        IngredientDto ingredientDto = IngredientDto.builder()
+        return IngredientDto.builder()
                 .id(ingredient.getId())
                 .amount(ingredient.getAmount())
                 .description(ingredient.getDescription())
                 .unitOfMeasure(unitOfMeasureConverter.convert(ingredient.getUnitOfMeasure()))
                 .build();
-
-        if (Objects.nonNull(ingredient.getRecipe())) {
-            ingredientDto.setRecipeId(ingredient.getRecipe().getId());
-        }
-
-        return ingredientDto;
     }
 
 }

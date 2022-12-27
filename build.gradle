@@ -31,6 +31,7 @@ dependencies {
     implementation group: 'jakarta.validation', name: 'jakarta.validation-api', version: '3.0.2'
     implementation group: 'org.hibernate', name: 'hibernate-validator', version: '8.0.0.Final'
     implementation group: 'cz.jirutka.spring', name: 'embedmongo-spring', version: '1.3.1'
+    implementation group: 'org.mongodb', name: 'mongodb-driver-core', version: '4.7.0'
     implementation 'de.flapdoodle.embed:de.flapdoodle.embed.mongo'
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'

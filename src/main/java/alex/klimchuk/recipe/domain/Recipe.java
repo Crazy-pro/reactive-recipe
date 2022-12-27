@@ -14,8 +14,8 @@ import java.util.Set;
 @Data
 @Builder
 @Document
-@ToString
-@EqualsAndHashCode(exclude = {"difficulty", "ingredients", "categories"})
+@ToString(exclude = {"difficulty", "ingredients", "categories", "notes"})
+@EqualsAndHashCode(exclude = {"difficulty", "ingredients", "categories", "notes"})
 @NoArgsConstructor
 @AllArgsConstructor
 public class Recipe {

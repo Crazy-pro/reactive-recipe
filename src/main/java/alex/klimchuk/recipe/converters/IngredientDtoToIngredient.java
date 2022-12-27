@@ -36,7 +36,6 @@ public class IngredientDtoToIngredient implements Converter<IngredientDto, Ingre
         if (Objects.nonNull(ingredientDto.getRecipeId())) {
             Recipe recipe = new Recipe();
             recipe.setId(ingredientDto.getRecipeId());
-            ingredient.setRecipe(recipe);
             recipe.addIngredient(ingredient);
         }
 

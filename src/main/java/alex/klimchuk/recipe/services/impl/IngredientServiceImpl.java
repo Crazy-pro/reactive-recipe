@@ -5,14 +5,11 @@ import alex.klimchuk.recipe.converters.IngredientDtoToIngredient;
 import alex.klimchuk.recipe.converters.IngredientToIngredientDto;
 import alex.klimchuk.recipe.domain.Ingredient;
 import alex.klimchuk.recipe.domain.Recipe;
-import alex.klimchuk.recipe.repositories.RecipeRepository;
-import alex.klimchuk.recipe.repositories.UnitOfMeasureRepository;
 import alex.klimchuk.recipe.repositories.reactive.RecipeReactiveRepository;
 import alex.klimchuk.recipe.repositories.reactive.UnitOfMeasureReactiveRepository;
 import alex.klimchuk.recipe.services.IngredientService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Mono;
 
 import java.util.Objects;
@@ -120,8 +117,6 @@ public class IngredientServiceImpl implements IngredientService {
             if (ingredientOptional.isPresent()) {
                 log.debug("Found Ingredient");
 
-                Ingredient ingredientToDelete = ingredientOptional.get();
-                ingredientToDelete.setRecipe(null);
                 recipe.getIngredients().remove(ingredientOptional.get());
                 recipeReactiveRepository.save(recipe).block();
             }

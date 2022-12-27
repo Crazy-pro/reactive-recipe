@@ -3,9 +3,12 @@ spring:
     level: debug
   data:
     mongodb:
-      authentication-database: admin
-      database: embedded
-      username: root
-      password: root
+#      authentication-database: admin
+#      database: recipe
+#      username: root
+#      password: root
       host: localhost
-      port: 0
+      port: 27017
+  jackson:
+    serialization:
+      indent-output: true
