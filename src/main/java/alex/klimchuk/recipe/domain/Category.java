@@ -12,7 +12,6 @@ import java.util.Set;
 @Data
 @Builder
 @Document
-@ToString
 @EqualsAndHashCode(exclude = {"recipes"})
 @NoArgsConstructor
 @AllArgsConstructor

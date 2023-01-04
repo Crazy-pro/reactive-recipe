@@ -11,8 +11,6 @@ import java.util.UUID;
 @Data
 @Builder
 @Document
-@ToString
-@EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
 public class Ingredient {

@@ -10,8 +10,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Data
 @Builder
 @Document
-@ToString
-@EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
 public class UnitOfMeasure {

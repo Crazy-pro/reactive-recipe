@@ -11,7 +11,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Data
 @Builder
 @Document
-@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 public class Notes {
