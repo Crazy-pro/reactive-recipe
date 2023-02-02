@@ -1,0 +1,77 @@
+package alex.klimchuk.reactive.recipe.converters;
+
+import alex.klimchuk.reactive.recipe.domain.Ingredient;
+import alex.klimchuk.reactive.recipe.dto.IngredientDto;
+import alex.klimchuk.reactive.recipe.dto.UnitOfMeasureDto;
+import org.junit.Before;
+import org.junit.Test;
+
+import static org.junit.Assert.*;
+
+/**
+ * Copyright Alex Klimchuk (c) 2022.
+ */
+public class IngredientDtoToIngredientTest {
+
+    public static final Double AMOUNT = 1.0;
+    public static final String DESCRIPTION = "CheeseBurger";
+    public static final String ID_VALUE = "1";
+    public static final String UOM_ID = "2";
+
+    IngredientDtoToIngredient converter;
+
+    @Before
+    public void setUp() throws Exception {
+        converter = new IngredientDtoToIngredient(new UnitOfMeasureDtoToUnitOfMeasure());
+    }
+
+    @Test
+    public void testNullObject() {
+        assertNull(converter.convert(null));
+    }
+
+    @Test
+    public void testEmptyObject() {
+        assertNotNull(converter.convert(new IngredientDto()));
+    }
+
+    @Test
+    public void testConvert() {
+        UnitOfMeasureDto unitOfMeasureDto = new UnitOfMeasureDto();
+        unitOfMeasureDto.setId(UOM_ID);
+
+        IngredientDto ingredientDto = IngredientDto.builder()
+                .id(ID_VALUE)
+                .amount(AMOUNT)
+                .description(DESCRIPTION)
+                .unitOfMeasureDto(unitOfMeasureDto)
+                .build();
+
+        Ingredient ingredient = converter.convert(ingredientDto);
+
+        assertNotNull(ingredient);
+        assertNotNull(ingredient.getUnitOfMeasure());
+        assertEquals(ID_VALUE, ingredient.getId());
+        assertEquals(AMOUNT, ingredient.getAmount());
+        assertEquals(DESCRIPTION, ingredient.getDescription());
+        assertEquals(UOM_ID, ingredient.getUnitOfMeasure().getId());
+    }
+
+    @Test
+    public void testConvertWithNullUOM() {
+        IngredientDto ingredientDto = IngredientDto.builder()
+                .id(ID_VALUE)
+                .amount(AMOUNT)
+                .description(DESCRIPTION)
+                .build();
+
+        Ingredient ingredient = converter.convert(ingredientDto);
+
+        assertNotNull(ingredient);
+        assertNull(ingredient.getUnitOfMeasure());
+        assertEquals(ID_VALUE, ingredient.getId());
+        assertEquals(AMOUNT, ingredient.getAmount());
+        assertEquals(DESCRIPTION, ingredient.getDescription());
+    }
+
+}
