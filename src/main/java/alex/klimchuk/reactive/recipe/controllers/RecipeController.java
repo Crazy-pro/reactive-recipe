@@ -44,7 +44,7 @@ public class RecipeController {
 
     @GetMapping("/{id}/update")
     public String updateRecipe(@PathVariable String id, Model model) {
-        model.addAttribute("recipe", recipeService.findDtoById(id).subscribe());
+        model.addAttribute("recipe", recipeService.findDtoById(id).block());
         return "recipe/recipeForm";
     }
 
@@ -63,7 +63,7 @@ public class RecipeController {
 
     @GetMapping("/{id}/delete")
     public String deleteById(@PathVariable String id) {
-        recipeService.deleteById(id).subscribe();
+        recipeService.deleteById(id).block();
         return "redirect:/";
     }
 

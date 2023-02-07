@@ -1,5 +1,5 @@
 ### Reactive Recipe
-This repository contains a Reactive version of Recipe using Spring WebFlux and NoSQL MongoDB Database.
+This repository contains an example of a multi-module Spring WebFlux project with Back-End and Front-End parts.
 
 
 
